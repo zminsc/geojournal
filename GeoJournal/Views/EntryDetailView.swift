@@ -1,0 +1,33 @@
+//
+//  EntryDetailView.swift
+//  GeoJournal
+//
+//  Created by Steven Chang on 12/1/24.
+//
+
+import SwiftUI
+
+struct EntryDetailView: View {
+    var entry: Entry
+
+    var body: some View {
+        List {
+            Section(header: Text("Entry Details")) {
+                Text("Title: \(entry.title)")
+                Text("Description: \(entry.description)")
+                Text("Location: \(entry.location.coordinate.latitude), \(entry.location.coordinate.longitude)")
+                Text("Date: \(entry.timestamp, formatter: dateFormatter)")
+            }
+        }
+        .listStyle(.insetGrouped)
+        .navigationBarTitle("Entry Details", displayMode: .inline)
+    }
+}
+
+// Helper to format the date
+private let dateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .long
+    formatter.timeStyle = .short
+    return formatter
+}()
