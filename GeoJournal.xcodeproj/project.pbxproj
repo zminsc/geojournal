@@ -10,9 +10,22 @@
 		B114ECEB2CFD0FCF00BBC455 /* GeoJournal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoJournal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		50EBF8CA2CFD8D80001FCBF7 /* Exceptions for "GeoJournal" folder in "GeoJournal" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = B114ECEA2CFD0FCF00BBC455 /* GeoJournal */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		B114ECED2CFD0FCF00BBC455 /* GeoJournal */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				50EBF8CA2CFD8D80001FCBF7 /* Exceptions for "GeoJournal" folder in "GeoJournal" target */,
+			);
 			path = GeoJournal;
 			sourceTree = "<group>";
 		};
@@ -252,10 +265,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GeoJournal/Preview Content\"";
-				DEVELOPMENT_TEAM = VAP8J47F2Y;
+				DEVELOPMENT_TEAM = M3MXPWSA8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeoJournal/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We use your camera to take photos of the location you want to document.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We use your location to automatically attach geographic coordinates to your journal entries. Your location data is used exclusively for this feature and is not shared without your consent.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We want you to be able to save any photos you take while trying to document your experiences on the app.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We want to be able to load photos you have already taken so you can assign them to an entry.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -266,7 +283,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stevenchang.GeoJournal;
+				PRODUCT_BUNDLE_IDENTIFIER = quinnliu.GeoJournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -282,10 +299,14 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"GeoJournal/Preview Content\"";
-				DEVELOPMENT_TEAM = VAP8J47F2Y;
+				DEVELOPMENT_TEAM = M3MXPWSA8A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GeoJournal/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "We use your camera to take photos of the location you want to document.";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We use your location to automatically attach geographic coordinates to your journal entries. Your location data is used exclusively for this feature and is not shared without your consent.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "We want you to be able to save any photos you take while trying to document your experiences on the app.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "We want to be able to load photos you have already taken so you can assign them to an entry.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -296,7 +317,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = stevenchang.GeoJournal;
+				PRODUCT_BUNDLE_IDENTIFIER = quinnliu.GeoJournal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

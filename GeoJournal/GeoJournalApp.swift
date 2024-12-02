@@ -4,7 +4,7 @@
 //
 //  Created by Steven Chang on 12/1/24.
 //
-envimport SwiftUI
+import SwiftUI
 
 @main
 struct GeoJournalApp: App {
