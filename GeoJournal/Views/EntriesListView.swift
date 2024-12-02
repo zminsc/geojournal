@@ -32,7 +32,9 @@ struct EntriesListView: View {
                 
                 Menu {
                     Button(action: {
-                        sortByDistance.toggle()
+                        withAnimation {
+                            sortByDistance.toggle()
+                        }
                     }) {
                         Label(
                             sortByDistance ? "Sort by Recent" : "Sort by Distance",
