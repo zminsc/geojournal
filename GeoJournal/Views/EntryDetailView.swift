@@ -6,21 +6,28 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct EntryDetailView: View {
     var entry: Entry
-
+    
     var body: some View {
-        List {
-            Section(header: Text("Entry Details")) {
-                Text("Title: \(entry.title)")
-                Text("Description: \(entry.description)")
-                Text("Location: \(entry.location.coordinate.latitude), \(entry.location.coordinate.longitude)")
-                Text("Date: \(entry.timestamp, formatter: dateFormatter)")
-            }
-            
-            if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
-                Section(header: Text("Image Preview")) {
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 8) {
+                Text(entry.title)
+                    .font(.title)
+                    .bold()
+                    .padding(.vertical, 4)
+                
+                Text(entry.timestamp, formatter: dateFormatter)
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                
+                Text(entry.description)
+                    .font(.body)
+                    .padding(.bottom, 8)
+                
+                if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
                     HStack {
                         Spacer()
                         Image(uiImage: uiImage)
@@ -32,10 +39,14 @@ struct EntryDetailView: View {
                         Spacer()
                     }
                 }
+                
+                Map {
+                    Marker(entry.title, coordinate: entry.location.coordinate)
+                }
+                .frame(height: 250)
             }
+            .padding()
         }
-        .listStyle(.insetGrouped)
-        .navigationBarTitle("Entry Details", displayMode: .inline)
     }
 }
 

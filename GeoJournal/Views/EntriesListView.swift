@@ -75,19 +75,31 @@ struct EntryCardView: View {
     let entry: Entry
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(entry.title)
-                .font(.headline)
-                .foregroundColor(.primary)
+        HStack {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(entry.title)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text(entry.timestamp, style: .date)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                
+                Text(entry.description)
+                    .font(.body)
+                    .foregroundColor(.primary)
+                    .lineLimit(3)
+            }
             
-            Text(entry.timestamp, style: .date)
-                .font(.subheadline)
-                .foregroundColor(.secondary)
+            Spacer()
             
-            Text(entry.description)
-                .font(.body)
-                .foregroundColor(.primary)
-                .lineLimit(3)
+            if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill() // Ensures the image fills the square frame
+                    .frame(width: 80, height: 80) // Define square dimensions
+                    .clipShape(RoundedRectangle(cornerRadius: 10)) // Rounded corners
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
