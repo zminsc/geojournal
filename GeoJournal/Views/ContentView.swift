@@ -10,13 +10,22 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Tab("Create Entry", systemImage: "note.text.badge.plus") {
-                CreateEntryView()
-            }
+            CreateEntryView()
+                .tabItem {
+                    Label("Create Entry", systemImage: "note.text.badge.plus")
+                }
             
-            Tab("View Entries", systemImage: "list.bullet") {
-                EntriesView()
-            }
+            EntriesView()
+                .tabItem {
+                    Label("View Entries", systemImage: "list.bullet")
+                }
+
+//            Tab("Create Entry", systemImage: "note.text.badge.plus") {
+//            }
+//            
+//            Tab("View Entries", systemImage: "list.bullet") {
+//                EntriesView()
+//            }
         }
     }
 }
