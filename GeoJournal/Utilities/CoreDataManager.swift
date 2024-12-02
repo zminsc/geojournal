@@ -72,6 +72,14 @@ class CoreDataManager {
         return cdEntry
     }
     
+    func updateCDEntry(from entry: Entry, newTitle: String, newDescription: String) {
+        guard let cdEntry = getCDEntry(from: entry) else { return }
+        
+        cdEntry.title = newTitle
+        cdEntry.note = newDescription
+        saveChanges()
+    }
+    
     func deleteCDEntry(from entry: Entry) {
         guard let cdEntry = getCDEntry(from: entry) else { return }
         persistentContainer.viewContext.delete(cdEntry)

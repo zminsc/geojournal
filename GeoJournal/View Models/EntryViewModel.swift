@@ -26,6 +26,14 @@ class EntryViewModel: ObservableObject {
         }
     }
     
+    func updateEntry(entry: Entry, newTitle: String, newDescription: String) {
+        if let entryIndex = entries.firstIndex(where: { $0.id == entry.id }) {
+            coreDataManager.updateCDEntry(from: entry, newTitle: newTitle, newDescription: newDescription)
+            entries[entryIndex].title = newTitle
+            entries[entryIndex].description = newDescription
+        }
+    }
+    
     func deleteEntry(entry: Entry) {
         if entries.contains(where: { $0.id == entry.id }) {
             coreDataManager.deleteCDEntry(from: entry)
