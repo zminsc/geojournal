@@ -12,14 +12,15 @@ struct Entry: Identifiable, Hashable {
     let title: String
     let description: String
     let location: CLLocation
-    
     let id: UUID
     let timestamp: Date
-    
-    init(title: String, description: String, location: CLLocation, id: UUID = UUID(), timestamp: Date = Date()) {
+    let image: Data?
+
+    init(title: String, description: String, location: CLLocation, image: Data? = nil, id: UUID = UUID(), timestamp: Date = Date()) {
         self.title = title
         self.description = description
         self.location = location
+        self.image = image
         self.id = id
         self.timestamp = timestamp
     }

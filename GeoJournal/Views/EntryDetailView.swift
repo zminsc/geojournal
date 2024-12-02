@@ -18,6 +18,21 @@ struct EntryDetailView: View {
                 Text("Location: \(entry.location.coordinate.latitude), \(entry.location.coordinate.longitude)")
                 Text("Date: \(entry.timestamp, formatter: dateFormatter)")
             }
+            
+            if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
+                Section(header: Text("Image Preview")) {
+                    HStack {
+                        Spacer()
+                        Image(uiImage: uiImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 200)
+                            .cornerRadius(10)
+                            .padding()
+                        Spacer()
+                    }
+                }
+            }
         }
         .listStyle(.insetGrouped)
         .navigationBarTitle("Entry Details", displayMode: .inline)

@@ -114,10 +114,13 @@ struct CreateEntryView: View {
                     Button(action: {
                         viewModel.createNewEntry(
                             title: entryTitle,
-                            description: entryDescription
+                            description: entryDescription,
+                            image: capturedImage?.jpegData(compressionQuality: 0.8) ?? photoData
                         )
                         entryTitle = ""
                         entryDescription = ""
+                        capturedImage = nil
+                        photoData = nil
                     }) {
                         Text("Save Entry")
                             .bold()

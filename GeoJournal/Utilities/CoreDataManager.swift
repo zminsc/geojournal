@@ -44,6 +44,7 @@ class CoreDataManager {
         cdEntry.timestamp = entry.timestamp
         cdEntry.lat = entry.location.coordinate.latitude
         cdEntry.lon = entry.location.coordinate.longitude
+        cdEntry.image = entry.image
         saveChanges()
         
         return cdEntry

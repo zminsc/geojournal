@@ -16,6 +16,7 @@ extension CDEntry {
             title: self.title!,
             description: self.note!,
             location: location,
+            image: self.image,
             id: self.id!,
             timestamp: self.timestamp!
         )
