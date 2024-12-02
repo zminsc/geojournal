@@ -9,23 +9,50 @@ import SwiftUI
 import MapKit
 
 struct EntryDetailView: View {
+    @EnvironmentObject var viewModel: EntryViewModel
+    @Environment(\.dismiss) var dismiss
+    
     var entry: Entry
+    
+    @State var isEditing = false
+    @State var newTitle: String
+    @State var newDescription: String
+    
+    init(entry: Entry) {
+        self.entry = entry
+        _newTitle = State(initialValue: entry.title)
+        _newDescription = State(initialValue: entry.description)
+    }
     
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 8) {
-                Text(entry.title)
-                    .font(.title)
-                    .bold()
-                    .padding(.vertical, 4)
+                Group {
+                    if isEditing {
+                        TextField("Title", text: $newTitle)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    } else {
+                        Text(newTitle)
+                    }
+                }
+                .font(.title)
+                .bold()
+                .padding(.vertical, 4)
                 
                 Text(entry.timestamp, formatter: dateFormatter)
                     .font(.body)
                     .foregroundColor(.secondary)
                 
-                Text(entry.description)
-                    .font(.body)
-                    .padding(.bottom, 8)
+                Group {
+                    if isEditing {
+                        TextField("Write a note...", text: $newDescription)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                    } else {
+                        Text(newDescription)
+                    }
+                }
+                .font(.body)
+                .padding(.bottom, 8)
                 
                 if !entry.photos.isEmpty {
                     ScrollView(.horizontal) {
@@ -47,8 +74,30 @@ struct EntryDetailView: View {
                     Marker(entry.title, coordinate: entry.location.coordinate)
                 }
                 .frame(height: 250)
+                
+                Button(role: .destructive) {
+                    viewModel.deleteEntry(entry: entry)
+                    dismiss()
+                } label: {
+                    Text("Delete entry")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 36)
+                }
+                .buttonStyle(.bordered)
             }
             .padding()
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    if isEditing {
+                        viewModel.updateEntry(entry: entry, newTitle: newTitle, newDescription: newDescription)
+                    }
+                    isEditing.toggle()
+                } label: {
+                    Text("Edit")
+                }
+            }
         }
     }
 }

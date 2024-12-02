@@ -34,6 +34,22 @@ class CoreDataManager {
         return cdEntries.map { $0.toEntry() }
     }
     
+    private func getCDEntry(from entry: Entry) -> CDEntry? {
+        var cdEntry: CDEntry? = nil
+        
+        let request = NSFetchRequest<CDEntry>(entityName: "CDEntry")
+        request.predicate = NSPredicate(format: "id == %@", entry.id as NSUUID)
+        request.fetchLimit = 1
+        
+        do {
+            cdEntry = try persistentContainer.viewContext.fetch(request).first
+        } catch let error {
+            print("An error occurred while reading snapshots from memory: \(error)")
+        }
+        
+        return cdEntry
+    }
+    
     @discardableResult
     func createCDEntry(from entry: Entry) -> CDEntry {
         let cdEntry = CDEntry(context: persistentContainer.viewContext)
@@ -54,6 +70,20 @@ class CoreDataManager {
         
         saveChanges()
         return cdEntry
+    }
+    
+    func updateCDEntry(from entry: Entry, newTitle: String, newDescription: String) {
+        guard let cdEntry = getCDEntry(from: entry) else { return }
+        
+        cdEntry.title = newTitle
+        cdEntry.note = newDescription
+        saveChanges()
+    }
+    
+    func deleteCDEntry(from entry: Entry) {
+        guard let cdEntry = getCDEntry(from: entry) else { return }
+        persistentContainer.viewContext.delete(cdEntry)
+        saveChanges()
     }
     
     private func saveChanges() {

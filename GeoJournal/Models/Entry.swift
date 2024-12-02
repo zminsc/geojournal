@@ -9,8 +9,8 @@ import CoreLocation
 import Foundation
 
 struct Entry: Identifiable, Hashable {
-    let title: String
-    let description: String
+    var title: String
+    var description: String
     let location: CLLocation
     let id: UUID
     let timestamp: Date
