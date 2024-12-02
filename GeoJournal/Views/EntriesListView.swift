@@ -22,17 +22,75 @@ struct EntriesListView: View {
     
     var body: some View {
         VStack {
-            Toggle("Sort by Distance", isOn: $sortByDistance)
-                .padding()
+            HStack(alignment: .center) {
+                Text("Entries")
+                    .font(.largeTitle)
+                    .bold()
+                    .foregroundColor(.primary)
+                
+                Spacer()
+                
+                Menu {
+                    Button(action: {
+                        sortByDistance.toggle()
+                    }) {
+                        Label(
+                            sortByDistance ? "Sort by Recent" : "Sort by Distance",
+                            systemImage: sortByDistance ? "clock" : "location"
+                        )
+                    }
+                } label: {
+                    Circle()
+                        .frame(width: 28, height: 28)
+                        .foregroundColor(.blue)
+                        .overlay(
+                            Image(systemName: "ellipsis")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                        )
+                }
+            }
+            .padding()
             
-            List(sortedEntries) { entry in
-                NavigationLink(entry.title, destination: EntryDetailView(entry: entry))
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(sortedEntries) { entry in
+                        NavigationLink(value: entry) {
+                            EntryCardView(entry: entry)
+                        }
+                    }
+                }
+                .padding()
             }
         }
-        .navigationTitle("Entries")
+        .navigationDestination(for: Entry.self) { entry in
+            EntryDetailView(entry: entry)
+        }
     }
 }
 
-#Preview {
-    EntriesListView()
+struct EntryCardView: View {
+    let entry: Entry
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(entry.title)
+                .font(.headline)
+                .foregroundColor(.primary)
+            
+            Text(entry.timestamp, style: .date)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+            
+            Text(entry.description)
+                .font(.body)
+                .foregroundColor(.primary)
+                .lineLimit(3)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+    }
 }
