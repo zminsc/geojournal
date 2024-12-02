@@ -26,6 +26,13 @@ class EntryViewModel: ObservableObject {
         }
     }
     
+    func deleteEntry(entry: Entry) {
+        if entries.contains(where: { $0.id == entry.id }) {
+            coreDataManager.deleteCDEntry(from: entry)
+            entries.removeAll { $0.id == entry.id }
+        }
+    }
+    
     func distanceFromEntry(entry: Entry) -> Double {
         let userLocation = locationViewModel.userLocation!
         let entryLocation = entry.location

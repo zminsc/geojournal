@@ -9,6 +9,9 @@ import SwiftUI
 import MapKit
 
 struct EntryDetailView: View {
+    @EnvironmentObject var viewModel: EntryViewModel
+    @Environment(\.dismiss) var dismiss
+    
     var entry: Entry
     
     var body: some View {
@@ -47,6 +50,16 @@ struct EntryDetailView: View {
                     Marker(entry.title, coordinate: entry.location.coordinate)
                 }
                 .frame(height: 250)
+                
+                Button(role: .destructive) {
+                    viewModel.deleteEntry(entry: entry)
+                    dismiss()
+                } label: {
+                    Text("Delete entry")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 36)
+                }
+                .buttonStyle(.bordered)
             }
             .padding()
         }
