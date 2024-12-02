@@ -11,7 +11,9 @@ import MapKit
 struct EntryDetailView: View {
     @EnvironmentObject var viewModel: EntryViewModel
     @Environment(\.dismiss) var dismiss
-    
+    @State private var selectedImage: UIImage? = nil // To store the selected image
+    @State private var isImageFullScreen: Bool = false // To control fullscreen view visibility
+
     var entry: Entry
     
     @State var isEditing = false
@@ -64,9 +66,15 @@ struct EntryDetailView: View {
                                         .scaledToFit()
                                         .frame(height: 100)
                                         .cornerRadius(8)
+                                        .onTapGesture {
+                                            // Set the selected image and show fullscreen view
+                                            selectedImage = image
+                                            isImageFullScreen.toggle()
+                                        }
                                 }
                             }
                         }
+                        
                     }
                 }
                 
@@ -74,6 +82,7 @@ struct EntryDetailView: View {
                     Marker(entry.title, coordinate: entry.location.coordinate)
                 }
                 .frame(height: 250)
+                .cornerRadius(10)
                 
                 Button(role: .destructive) {
                     viewModel.deleteEntry(entry: entry)
@@ -99,6 +108,24 @@ struct EntryDetailView: View {
                 }
             }
         }
+        .overlay(
+            Group {
+                if isImageFullScreen, let selectedImage = selectedImage {
+                    Color.black.opacity(0.8)
+                        .edgesIgnoringSafeArea(.all)
+                        .onTapGesture {
+                            isImageFullScreen = false // Dismiss fullscreen on tap
+                        }
+                    Image(uiImage: selectedImage)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .cornerRadius(8)
+                        .shadow(radius: 10)
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: isImageFullScreen)
+        )
     }
 }
 
