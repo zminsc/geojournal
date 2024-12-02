@@ -27,16 +27,19 @@ struct EntryDetailView: View {
                     .font(.body)
                     .padding(.bottom, 8)
                 
-                if let imageData = entry.photos.first, let uiImage = UIImage(data: imageData) {
-                    HStack {
-                        Spacer()
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 200)
-                            .cornerRadius(10)
-                            .padding()
-                        Spacer()
+                if !entry.photos.isEmpty {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(entry.photos, id: \.self) { photoData in
+                                if let image = UIImage(data: photoData) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 100)
+                                        .cornerRadius(8)
+                                }
+                            }
+                        }
                     }
                 }
                 
