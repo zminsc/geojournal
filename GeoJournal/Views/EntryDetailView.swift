@@ -27,7 +27,7 @@ struct EntryDetailView: View {
                     .font(.body)
                     .padding(.bottom, 8)
                 
-                if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
+                if let imageData = entry.photos.first, let uiImage = UIImage(data: imageData) {
                     HStack {
                         Spacer()
                         Image(uiImage: uiImage)

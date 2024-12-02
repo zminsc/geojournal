@@ -93,7 +93,7 @@ struct EntryCardView: View {
             
             Spacer()
             
-            if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
+            if let imageData = entry.photos.first, let uiImage = UIImage(data: imageData) {
                 Image(uiImage: uiImage)
                     .resizable()
                     .scaledToFill() // Ensures the image fills the square frame

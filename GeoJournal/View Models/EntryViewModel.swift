@@ -18,14 +18,9 @@ class EntryViewModel: ObservableObject {
         entries = coreDataManager.getEntries()
     }
     
-    func createNewEntry(title: String, description: String, image: Data?) {
+    func createNewEntry(title: String, description: String, photos: [Data]) {
         if let location = locationViewModel.userLocation {
-            let entry = Entry(
-                title: title,
-                description: description,
-                location: location,
-                image: image
-            )
+            let entry = Entry(title: title, description: description, location: location, photos: photos)
             coreDataManager.createCDEntry(from: entry)
             entries.append(entry)
         }

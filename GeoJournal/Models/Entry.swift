@@ -14,13 +14,13 @@ struct Entry: Identifiable, Hashable {
     let location: CLLocation
     let id: UUID
     let timestamp: Date
-    let image: Data?
+    let photos: [Data]
 
-    init(title: String, description: String, location: CLLocation, image: Data? = nil, id: UUID = UUID(), timestamp: Date = Date()) {
+    init(title: String, description: String, location: CLLocation, photos: [Data] = [], id: UUID = UUID(), timestamp: Date = Date()) {
         self.title = title
         self.description = description
         self.location = location
-        self.image = image
+        self.photos = photos
         self.id = id
         self.timestamp = timestamp
     }

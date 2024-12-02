@@ -12,13 +12,18 @@ extension CDEntry {
     func toEntry() -> Entry {
         let location = CLLocation(latitude: self.lat, longitude: self.lon)
         
+        // Convert NSSet of CDPhoto to [Data]
+        let photoDataArray: [Data] = (self.photos as? Set<CDPhoto>)?.compactMap { $0.photoData } ?? []
+
         return Entry(
-            title: self.title!,
-            description: self.note!,
+            title: self.title ?? "Untitled",
+            description: self.note ?? "",
             location: location,
-            image: self.image,
-            id: self.id!,
-            timestamp: self.timestamp!
+            photos: photoDataArray,
+            id: self.id ?? UUID(),
+            timestamp: self.timestamp ?? Date()
         )
     }
 }
+
+
