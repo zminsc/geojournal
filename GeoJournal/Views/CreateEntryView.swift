@@ -73,7 +73,7 @@ struct CreateEntryView: View {
                         }
                     }
                     .sheet(isPresented: $showingCamera) {
-                        ImagePicker(image: $capturedImage)
+                        ImagePicker(photoDataArray: $photoDataArray)
                     }
                     
                     if !photoDataArray.isEmpty || capturedImage != nil {
@@ -191,7 +191,7 @@ struct CreateEntryView: View {
 
 // MARK: - ImagePicker for Camera (from chat, need to read through)
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var image: UIImage?
+    @Binding var photoDataArray: [Data] // Add a binding to `photoDataArray`
     @Environment(\.presentationMode) var presentationMode
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
@@ -216,7 +216,9 @@ struct ImagePicker: UIViewControllerRepresentable {
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage {
-                parent.image = uiImage
+                if let imageData = uiImage.jpegData(compressionQuality: 0.8) {
+                    parent.photoDataArray.append(imageData)
+                }
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
@@ -226,3 +228,4 @@ struct ImagePicker: UIViewControllerRepresentable {
         }
     }
 }
+
