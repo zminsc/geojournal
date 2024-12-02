@@ -10,27 +10,24 @@ import SwiftUI
 struct EntriesView: View {
     @EnvironmentObject var viewModel: EntryViewModel
     
-    @State var sortByDistance = false
-    
-    var sortedEntries: [Entry] {
-        if sortByDistance {
-            viewModel.entries.sorted { viewModel.distanceFromEntry(entry: $0) < viewModel.distanceFromEntry(entry: $1) }
-        } else {
-            viewModel.entries.sorted { $0.timestamp > $1.timestamp }
-        }
-    }
+    @State var showMapView = false
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Toggle("Sort by Distance", isOn: $sortByDistance)
-                    .padding()
+            ZStack {
+                if showMapView {
+                    EntriesMapView()
+                } else {
+                    EntriesListView()
+                }
                 
-                List(sortedEntries) { entry in
-                    NavigationLink(entry.title, destination: EntryDetailView(entry: entry))
+                VStack {
+                    Spacer()
+                    
+                    Toggle("\(showMapView ? "View List" : "View Map")", isOn: $showMapView)
+                        .toggleStyle(.button)
                 }
             }
-            .navigationTitle("Entries")
         }
     }
 }
