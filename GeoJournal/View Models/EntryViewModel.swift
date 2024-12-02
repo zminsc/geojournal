@@ -30,4 +30,10 @@ class EntryViewModel: ObservableObject {
             entries.append(entry)
         }
     }
+    
+    func distanceFromEntry(entry: Entry) -> Double {
+        let userLocation = locationViewModel.userLocation!
+        let entryLocation = entry.location
+        return userLocation.distance(from: entryLocation)
+    }
 }
