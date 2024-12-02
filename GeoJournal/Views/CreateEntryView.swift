@@ -13,8 +13,8 @@ struct CreateEntryView: View {
     
     @State private var entryTitle = ""
     @State private var entryDescription = ""
-    @State private var selectedPhoto: PhotosPickerItem? = nil
-    @State private var photoData: Data? = nil
+    @State private var selectedPhotos: [PhotosPickerItem] = []
+    @State private var photoDataArray: [Data] = []
     @State private var showingCamera = false
     @State private var capturedImage: UIImage? = nil
     
@@ -22,21 +22,21 @@ struct CreateEntryView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("Add Photo")
+                        Text("Add Photos")
                             .font(.headline)
                             .foregroundColor(.secondary)
                         
                         HStack {
                             PhotosPicker(
-                                selection: $selectedPhoto,
+                                selection: $selectedPhotos,
+                                maxSelectionCount: 10,
                                 matching: .images,
                                 photoLibrary: .shared()
                             ) {
                                 HStack {
                                     Image(systemName: "photo")
-                                    Text("Select Photo")
+                                    Text("Select Photos")
                                 }
                                 .padding()
                                 .frame(maxWidth: .infinity)
@@ -44,11 +44,13 @@ struct CreateEntryView: View {
                                 .foregroundColor(.blue)
                                 .cornerRadius(8)
                             }
-                            .onChange(of: selectedPhoto) { _, newValue in
+                            .onChange(of: selectedPhotos) { newItems in
+                                photoDataArray = [] // Reset before adding new photos
                                 Task {
-                                    if let data = try? await newValue?.loadTransferable(type: Data.self) {
-                                        photoData = data
-                                        capturedImage = nil
+                                    for item in newItems {
+                                        if let data = try? await item.loadTransferable(type: Data.self) {
+                                            photoDataArray.append(data)
+                                        }
                                     }
                                 }
                             }
@@ -72,29 +74,34 @@ struct CreateEntryView: View {
                         ImagePicker(image: $capturedImage)
                     }
                     
-                    if let previewImage = previewImage() {
+                    if !photoDataArray.isEmpty || capturedImage != nil {
                         VStack(alignment: .leading) {
-                            Text("Image Preview")
+                            Text("Image Previews")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
                             
-                            HStack {
-                                Image(uiImage: previewImage)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(maxHeight: 200)
-                                    .cornerRadius(10)
-                                    .shadow(radius: 5)
-                                
-                                Spacer()
-                                
-                                Button("Remove Image") {
-                                    capturedImage = nil
-                                    photoData = nil
-                                    selectedPhoto = nil
+                            LazyVGrid(columns: [GridItem(.adaptive(minimum: 100))], spacing: 10) {
+                                if let capturedImage {
+                                    Image(uiImage: capturedImage)
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 100, height: 100)
+                                        .clipped()
+                                        .cornerRadius(10)
+                                        .shadow(radius: 5)
                                 }
-                                .padding(.horizontal)
-                                .foregroundColor(.red)
+                                
+                                ForEach(photoDataArray, id: \.self) { data in
+                                    if let uiImage = UIImage(data: data) {
+                                        Image(uiImage: uiImage)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 100, height: 100)
+                                            .clipped()
+                                            .cornerRadius(10)
+                                            .shadow(radius: 5)
+                                    }
+                                }
                             }
                         }
                     }
@@ -112,15 +119,20 @@ struct CreateEntryView: View {
                     }
                     
                     Button(action: {
+                        var allPhotos = photoDataArray
+                        if let capturedImageData = capturedImage?.jpegData(compressionQuality: 0.8) {
+                            allPhotos.append(capturedImageData)
+                        }
                         viewModel.createNewEntry(
                             title: entryTitle,
                             description: entryDescription,
-                            image: capturedImage?.jpegData(compressionQuality: 0.8) ?? photoData
+                            photos: allPhotos
                         )
                         entryTitle = ""
                         entryDescription = ""
                         capturedImage = nil
-                        photoData = nil
+                        photoDataArray = []
+                        selectedPhotos = []
                     }) {
                         Text("Save Entry")
                             .bold()
@@ -140,14 +152,14 @@ struct CreateEntryView: View {
     }
     
     // Helper to get the preview image
-    private func previewImage() -> UIImage? {
-        if let capturedImage {
-            return capturedImage
-        } else if let photoData, let image = UIImage(data: photoData) {
-            return image
-        }
-        return nil
-    }
+//    private func previewImage() -> UIImage? {
+//        if let capturedImage {
+//            return capturedImage
+//        } else if let photoData, let image = UIImage(data: photoData) {
+//            return image
+//        }
+//        return nil
+//    }
 }
 
 // ImagePicker struct remains the same
