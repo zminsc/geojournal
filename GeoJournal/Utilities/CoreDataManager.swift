@@ -44,9 +44,15 @@ class CoreDataManager {
         cdEntry.timestamp = entry.timestamp
         cdEntry.lat = entry.location.coordinate.latitude
         cdEntry.lon = entry.location.coordinate.longitude
-        cdEntry.image = entry.image
-        saveChanges()
         
+        // Link photos
+        for photoData in entry.photos {
+            let cdPhoto = CDPhoto(context: persistentContainer.viewContext)
+            cdPhoto.photoData = photoData
+            cdPhoto.entry = cdEntry
+        }
+        
+        saveChanges()
         return cdEntry
     }
     

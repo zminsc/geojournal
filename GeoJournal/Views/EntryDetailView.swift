@@ -19,17 +19,20 @@ struct EntryDetailView: View {
                 Text("Date: \(entry.timestamp, formatter: dateFormatter)")
             }
             
-            if let imageData = entry.image, let uiImage = UIImage(data: imageData) {
-                Section(header: Text("Image Preview")) {
-                    HStack {
-                        Spacer()
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 200)
-                            .cornerRadius(10)
-                            .padding()
-                        Spacer()
+            if !entry.photos.isEmpty {
+                Section(header: Text("Photos")) {
+                    ScrollView(.horizontal) {
+                        HStack {
+                            ForEach(entry.photos, id: \.self) { photoData in
+                                if let image = UIImage(data: photoData) {
+                                    Image(uiImage: image)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 100)
+                                        .cornerRadius(8)
+                                }
+                            }
+                        }
                     }
                 }
             }
