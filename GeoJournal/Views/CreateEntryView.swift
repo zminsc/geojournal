@@ -139,7 +139,7 @@ struct CreateEntryView: View {
                         TextField("Title", text: $entryTitle)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                         
-                        TextField("Description", text: $entryDescription, axis: .vertical)
+                        TextField("Description", text: $entryDescription)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                     }
                     
