@@ -1,4 +1,4 @@
-# GeoJournal App
+# geojournal
 
 For our GeoJournal app, we used MVVM architecture to structure an app that allows users to take notes that can be documented and sorted via location. Users can also attach images and title their notes along with their descriptions.
 
